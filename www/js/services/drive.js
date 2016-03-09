@@ -29,6 +29,7 @@ angular.module('TractNotes')
       var init_gapi = function () {
         $ionicPlatform.ready(function () {
           ///$rootScope.$apply(function() {
+            // gapi.load('picker');
           var apis = [];
           if (apiKey) {
             $window.gapi.client.setApiKey(apiKey);
@@ -53,6 +54,16 @@ angular.module('TractNotes')
 
         var cache = $cacheFactory('files');
 
+        var fileList = []; //list of files with chosen type shown in drive.html
+
+        this.setFileList = function (list) {
+          fileList = list;
+        };
+
+        this.getFileList = function () {
+          return fileList;
+        };
+
         /**
          * Combines metadata & content into a single object & caches the result
          *
@@ -68,6 +79,8 @@ angular.module('TractNotes')
           cache.put(metadata.id, file);
           return file;
         };
+
+
 
 
         /**
@@ -154,7 +167,7 @@ angular.module('TractNotes')
 
           var deffer = $q.defer();
           var request = gapi.client.drive.files.list({
-            'maxResults': 20
+            // 'maxResults': 20
           });
 
           request.execute(function (resp) {
@@ -164,6 +177,42 @@ angular.module('TractNotes')
               for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 read_files.push({name: file.title, id: file.id});
+              }
+              deffer.resolve(read_files);
+            } else {
+              deffer.reject("No files found");
+              //appendPre('No files found.');
+              console.log("No files found");
+            }
+          });
+          return deffer.promise;
+        };
+
+        this.readFilesOfType = function(fileType) {
+          /*
+           * Return files of type fileType
+           **/
+
+          var deffer = $q.defer();
+          var request;
+          if(fileType === "gpx") {
+            request = gapi.client.drive.files.list({
+                        q: "fileExtension='gpx'"
+                      });
+          }
+          else if(fileType === "kml") {
+            request = gapi.client.drive.files.list({
+                        q: "fileExtension='kml'"
+                      });
+          }
+
+          request.execute(function (resp) {
+            var files = resp.items;
+            var read_files = [];
+            if (files && files.length > 0) {
+              for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                read_files.push({name: file.title, id: file.id, url: file.webContentLink});
               }
               deffer.resolve(read_files);
             } else {

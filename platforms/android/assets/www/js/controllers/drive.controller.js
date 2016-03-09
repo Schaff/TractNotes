@@ -5,32 +5,28 @@
         .module('TractNotes')
         .controller('DriveController', DriveController);
 
-    DriveController.$inject = ['$scope', 'Drive', '$state'];
+    DriveController.$inject = ['$scope', 'Drive', '$state', 'xmldataService'];
 
     /* @ngInject */
-    function DriveController($scope, Drive, $state) {
+    function DriveController($scope, Drive, $state, xmldataService) {
 
-        $scope.loginByGoogle = function() {
-
-            $scope.files = [];
-
-            $scope.readFiles = function() {
-                Drive.readFiles().then(function(files) {
-                    $scope.files = files;
-                    console.log("FileRead: success.");
-                }, function() {
-                    console.log("FileRead: error.");
-                });
-            };
-            $scope.readFiles();
-        }
         var vm = this;
-        vm.title = 'Controller';
+        vm.title = 'DriveController';
+        // vm.files = [];
+
+        // function getFiles() {
+        vm.files = Drive.getFileList();
+        // }
 
         activate();
 
         ////////////////
 
         function activate() {}
+
+        vm.importFromURL = function(file) {
+            window.alert(file.url);
+            xmldataService.setImportURL(file.url);
+        }
     }
 })();

@@ -7,36 +7,27 @@
 	      Select your file type
 	    </div>
 	    
-	    <ion-radio name="type">
-	      GPX
-	    </ion-radio>
-	    <ion-radio name="type">
-	      KML
+	    <ion-radio ng-repeat="item in vm.type" ng-value="item.value" ng-model="vm.selectedType" name="type">
+	    {{ item.text }}
 	    </ion-radio>
 
 	    <div class="item item-divider"> 
 	      Import from
 	    </div>
 	    
-	    <ion-radio name="source">
-	      Google Drive
-	    </ion-radio>
-	    <ion-radio name="source">
-	      Device
-	    </ion-radio>
-	    <ion-radio name="source">
-	      URL
+	    <ion-radio ng-repeat="item in vm.source" ng-value="item.value" ng-model="vm.selectedSource" name="source">
+	    {{ item.text }}
 	    </ion-radio>
 
-	                <form novalidate>
-                <label class="item item-input item-stacked-label">
-                <span class="input-label">URL</span>
-                <input type="url" placeholder="URL here" ng-model="url">
-            </label>
+	    <form novalidate>
+        <label class="item item-input item-stacked-label">
+          	<span class="input-label">URL</span>
+            <input type="url" placeholder="URL here" ng-model="url">
+        </label>
 	    
-	    <button class="button button-block button-positive" ng-click="vm.sendImportURL(url)">
+	    <button class="button button-block button-positive" ng-click="vm.importButton(url)">
 	      Add
 	    </button>
-	  </div>
+	</div>
   </ion-content>
 </ion-view>
