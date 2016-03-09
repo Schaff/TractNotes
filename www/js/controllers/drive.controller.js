@@ -9,18 +9,20 @@
 
     /* @ngInject */
     function DriveController($scope, Drive, $state, xmldataService) {
-
         var vm = this;
         vm.title = 'DriveController';
-        vm.files = Drive.getFileList();
+        vm.importFromURL = importFromURL;
+        vm.files = [];
 
         activate();
 
         ////////////////
 
-        function activate() {}
+        function activate() {
+            vm.files = Drive.getFileList();
+        }
 
-        vm.importFromURL = function(file) {
+        function importFromURL(file) {
             xmldataService.setImportURL(file.url);
         }
     }

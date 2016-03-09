@@ -11,29 +11,33 @@
     function ImportController($rootScope, xmldataService, Drive, $state) {
         var vm = this;
         vm.title = 'ImportController';
-        vm.sendImportURL = sendImportURL;
+        vm.importButton = importButton;
         vm.files = [];
-
-        vm.type = [
-          { text: "GPX", value: "gpx" },
-          { text: "KML", value: "kml" }
-        ];
-
-        vm.source = [
-          { text: "Google Drive", value: "drive" },
-          { text: "Device", value: "device" },
-          { text: "URL", value: "url" }
-        ];
+        vm.type = [];
+        vm.source = [];
+        vm.selectedSource = null;
+        vm.selectedType = null;
 
         activate();
 
         ////////////////
 
-        function activate() {}
+        function activate() {
+            vm.type = [
+              { text: "GPX", value: "gpx" },
+              { text: "KML", value: "kml" }
+            ];
+
+            vm.source = [
+              { text: "Google Drive", value: "drive" },
+              { text: "Device", value: "device" },
+              { text: "URL", value: "url" }
+            ];
+        }
 
         // @todo error handling
 
-        vm.importButton = function(url) {
+        function importButton(url) {
             if(vm.selectedSource == "drive") {
                 var auth_token = gapi.auth.getToken();
                 if(auth_token) {
@@ -51,7 +55,6 @@
                 Drive.setFileList(files);
                 $state.go('app.drive');
             }, function() {
-                window.alert("failure");
                 console.log("FileRead: error.");
             });
             
@@ -65,7 +68,6 @@
         }
 
         function sendImportURL(url) {
-            window.alert(url);
             xmldataService.setImportURL(url);            
         }
     }

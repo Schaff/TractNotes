@@ -92,7 +92,8 @@
             views: {
                 'menuContent': {
                     templateUrl: 'templates/form.html',
-                    controller: 'GAuthController'
+                    controller: 'GAuthController',
+                    controllerAs: 'vm'
                 }
             }
         })
