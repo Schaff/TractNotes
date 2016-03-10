@@ -22,7 +22,7 @@
             vm.files = Drive.getFileList();
         }
 
-        function importFromURL(file) {
+        function importFromDrive(file) {
             xmldataService.setImportURL(file.url);
         }
     }
